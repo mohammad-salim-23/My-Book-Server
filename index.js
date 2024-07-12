@@ -82,6 +82,19 @@ async function run() {
         const result = await userCollection.insertOne(user);
         res.send(result);
     });
+    app.get('/users/admin/:email',verifyToken,async(req,res)=>{
+      const email = req.params.email;
+      if(email!==req.decoded?.email){
+        return res.status(403).send({message:'forbidden  access one'});
+      }
+      const query = {email:email};
+      const user = await userCollection.findOne(query);
+      let admin = false;
+      if(user){
+        admin = user?.role==='admin'
+      }
+      res.send({admin});
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
