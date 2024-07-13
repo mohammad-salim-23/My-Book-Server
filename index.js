@@ -102,6 +102,12 @@ async function run() {
       const result = await bookCollection.insertOne(book);
       res.send(result);
     })
+    app.get("books/:email",verifyToken,async(req,res)=>{
+      const email = req.params.email;
+      const query = {email:email};
+      const result = await bookCollection.find(query).toArray();
+      res.send(result);
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
