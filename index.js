@@ -95,6 +95,13 @@ async function run() {
       }
       res.send({admin});
     })
+    // book related api
+    app.post('/addBook',verifyToken,async(req,res)=>{
+      const book = req.body;
+      const email = req.params.email;
+      const result = await bookCollection.insertOne(book);
+      res.send(result);
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
